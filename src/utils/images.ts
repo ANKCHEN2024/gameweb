@@ -53,3 +53,21 @@ export function getGameBannerUrl(slug: GameSlug): string {
 export function getGameAccentColor(slug: GameSlug): string {
   return GAMES[slug].accentFrom;
 }
+
+export function getGameThumbUrl(slug: GameSlug): string {
+  const meta = GAMES[slug];
+
+  if ('steamAppId' in meta && meta.steamAppId) {
+    return getSteamCapsuleUrl(meta.steamAppId);
+  }
+
+  if ('coverUrl' in meta && meta.coverUrl) {
+    return meta.coverUrl;
+  }
+
+  return `/images/games/${slug}.svg`;
+}
+
+export function getGameThumbFallback(slug: GameSlug): string {
+  return `/images/games/${slug}.svg`;
+}

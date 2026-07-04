@@ -1,0 +1,31 @@
+---
+import type { GameSlug } from '../consts';
+import { getGameThumbFallback, getGameThumbUrl } from '../utils/images';
+
+interface Props {
+  slug: GameSlug;
+  title: string;
+  accent: string;
+}
+
+const { slug, title, accent } = Astro.props;
+const src = getGameThumbUrl(slug);
+const fallback = getGameThumbFallback(slug);
+---
+
+<div
+  class="guide-thumb relative shrink-0 overflow-hidden rounded-lg"
+  style={`box-shadow: 0 0 0 2px color-mix(in srgb, ${accent} 45%, transparent)`}
+>
+  <img
+    src={src}
+    alt={`${title} artwork`}
+    class="h-16 w-28 object-cover sm:h-[4.5rem] sm:w-32"
+    loading="lazy"
+    decoding="async"
+    width={128}
+    height={72}
+    data-fallback={fallback}
+    onerror="this.onerror=null;this.src=this.dataset.fallback"
+  />
+</div>

@@ -89,14 +89,6 @@ body {
     linear-gradient(180deg, var(--color-surface-elevated) 0%, var(--color-surface) 100%);
 }
 
-.guide-feed-item a {
-  @apply translate-y-0 transition-transform duration-200;
-}
-
-.guide-feed-item a:hover {
-  @apply -translate-y-0.5;
-}
-
 .prose-guide img {
   @apply my-6 w-full rounded-xl border border-[var(--color-border)] shadow-lg shadow-black/20;
 }

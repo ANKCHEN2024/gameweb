@@ -2,7 +2,8 @@
 import type { GuideEntry } from '../utils/guides';
 import type { GameSlug } from '../consts';
 import { formatDate, getGameMeta, getGuideUrl } from '../utils/guides';
-import { getGameAccentColor, getGameBannerUrl } from '../utils/images';
+import { getGameAccentColor } from '../utils/images';
+import GuideThumb from './GuideThumb.astro';
 
 interface Props {
   guides: GuideEntry[];
@@ -12,17 +13,16 @@ interface Props {
 const { guides, showGame = true } = Astro.props;
 ---
 
-<div class="guide-feed flex flex-col gap-5" data-guide-list>
+<div class="guide-catalog grid gap-3 sm:grid-cols-2 sm:gap-4" data-guide-list>
   {
     guides.map((guide) => {
       const gameMeta = getGameMeta(guide.data.game);
       const gameSlug = guide.data.game as GameSlug;
-      const bannerUrl = getGameBannerUrl(gameSlug);
       const accent = getGameAccentColor(gameSlug);
 
       return (
         <article
-          class="guide-feed-item group"
+          class="guide-catalog-item group min-w-0"
           data-guide-card
           data-game={guide.data.game}
           data-tags={guide.data.tags.join(',')}
@@ -30,74 +30,54 @@ const { guides, showGame = true } = Astro.props;
         >
           <a
             href={getGuideUrl(guide)}
-            class="block overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-elevated)] transition hover:border-[var(--color-accent)]/40 hover:shadow-xl hover:shadow-black/25"
+            class="flex h-full min-w-0 gap-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-elevated)] p-3 transition hover:border-[var(--color-accent)]/45 hover:bg-[var(--color-surface-muted)]/40 sm:gap-4 sm:p-4"
           >
-            <div class="relative h-24 overflow-hidden sm:h-28">
-              <img
-                src={bannerUrl}
-                alt=""
-                class="h-full w-full object-cover object-center opacity-70 transition duration-500 group-hover:scale-105 group-hover:opacity-90"
-                loading="lazy"
-                decoding="async"
-                width={460}
-                height={215}
-              />
-              <div
-                class="absolute inset-0 bg-gradient-to-b from-transparent via-[var(--color-surface-elevated)]/40 to-[var(--color-surface-elevated)]"
-                aria-hidden="true"
-              />
-            </div>
+            <GuideThumb slug={gameSlug} title={gameMeta.title} accent={accent} />
 
-            <div
-              class="relative -mt-8 px-5 pb-5 sm:-mt-10 sm:px-6 sm:pb-6"
-              style={`border-left: 3px solid ${accent}`}
-            >
-              <div class="pl-4">
-                {showGame && (
-                  <span
-                    class="inline-block rounded-md px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wide"
-                    style={`background: color-mix(in srgb, ${accent} 22%, transparent); color: ${accent}`}
-                  >
-                    {gameMeta.title}
-                  </span>
-                )}
-                <h2
-                  class:list={[
-                    'break-words text-xl font-bold leading-snug text-white transition group-hover:text-[var(--color-accent)] sm:text-2xl',
-                    showGame && 'mt-3',
-                    !showGame && 'mt-0',
-                  ]}
+            <div class="flex min-w-0 flex-1 flex-col">
+              {showGame && (
+                <p
+                  class="truncate text-[11px] font-semibold uppercase tracking-wide"
+                  style={`color: ${accent}`}
                 >
-                  {guide.data.title}
-                </h2>
-                <p class="mt-2 line-clamp-2 break-words text-sm leading-relaxed text-[var(--color-text-muted)] sm:text-base">
-                  {guide.data.description}
+                  {gameMeta.title}
                 </p>
+              )}
+              <h2
+                class:list={[
+                  'line-clamp-2 break-words text-sm font-bold leading-snug text-white group-hover:text-[var(--color-accent)] sm:text-base',
+                  showGame && 'mt-0.5',
+                ]}
+              >
+                {guide.data.title}
+              </h2>
+              <p class="mt-1 line-clamp-2 break-words text-xs leading-relaxed text-[var(--color-text-muted)] sm:text-sm">
+                {guide.data.description}
+              </p>
 
-                <div class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2">
-                  <time
-                    class="text-xs text-[var(--color-text-muted)]"
-                    datetime={guide.data.publishedAt.toISOString()}
-                  >
-                    {formatDate(guide.data.publishedAt)}
-                  </time>
-                  {
-                    guide.data.tags.length > 0 && (
-                      <ul class="flex flex-wrap gap-1.5">
-                        {guide.data.tags.slice(0, 3).map((tag) => (
-                          <li class="rounded bg-[var(--color-surface-muted)] px-2 py-0.5 text-xs text-[var(--color-text-muted)]">
-                            {tag}
-                          </li>
-                        ))}
-                      </ul>
-                    )
-                  }
-                  <span class="ml-auto text-xs font-medium text-[var(--color-accent)] opacity-0 transition group-hover:opacity-100">
-                    Read guide →
-                  </span>
-                </div>
+              <div class="mt-auto flex flex-wrap items-center gap-2 pt-2">
+                <time
+                  class="text-[11px] text-[var(--color-text-muted)]"
+                  datetime={guide.data.publishedAt.toISOString()}
+                >
+                  {formatDate(guide.data.publishedAt)}
+                </time>
+                {
+                  guide.data.tags.length > 0 && (
+                    <span class="hidden text-[11px] text-[var(--color-text-muted)] sm:inline">
+                      · {guide.data.tags.slice(0, 2).join(', ')}
+                    </span>
+                  )
+                }
               </div>
             </div>
+
+            <span
+              class="hidden shrink-0 self-center text-lg text-[var(--color-text-muted)] transition group-hover:translate-x-0.5 group-hover:text-[var(--color-accent)] sm:inline"
+              aria-hidden="true"
+            >
+              ›
+            </span>
           </a>
         </article>
       );
