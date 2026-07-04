@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 616 353" role="img" aria-label="Cyberpunk 2077">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fcee0a"/>
+      <stop offset="100%" stop-color="#00f0ff"/>
+    </linearGradient>
+  </defs>
+  <rect width="616" height="353" fill="url(#bg)"/>
+  <text x="40" y="280" fill="#0f1419" font-family="Segoe UI, system-ui, sans-serif" font-size="40" font-weight="700">Cyberpunk 2077</text>
+</svg>

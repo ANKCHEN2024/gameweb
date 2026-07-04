@@ -11,7 +11,7 @@ interface Props {
 
 const { slug, title, variant = 'card', class: className = '' } = Astro.props;
 
-const src = getGameCoverUrl(slug, variant === 'hero' ? 'hero' : 'card');
+const src = getGameCoverUrl(slug, variant);
 const fallback = getGameThumbFallback(slug);
 const gradient = getGameAccentGradient(slug);
 
