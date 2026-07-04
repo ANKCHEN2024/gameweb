@@ -55,6 +55,10 @@ export function getGameCoverUrl(
 ): string {
   const meta = GAMES[slug];
 
+  if (variant === 'hero' && 'heroCoverUrl' in meta && meta.heroCoverUrl) {
+    return meta.heroCoverUrl;
+  }
+
   if ('coverUrl' in meta && meta.coverUrl) {
     return meta.coverUrl;
   }

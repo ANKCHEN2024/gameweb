@@ -1,6 +1,7 @@
 $projectRoot = Resolve-Path (Join-Path $PSScriptRoot '..')
 $refs = @(
-  @{ slug = 'meccha-chameleon'; file = 'public\images\games\meccha-chameleon.svg' },
+  @{ slug = 'meccha-chameleon'; file = 'public\images\games\meccha-chameleon.jpg' },
+  @{ slug = 'meccha-chameleon-hero'; file = 'public\images\games\meccha-chameleon-hero.jpg' },
   @{ slug = 'path-of-exile-2'; url = 'https://cdn.cloudflare.steamstatic.com/steam/apps/2694490/capsule_616x353.jpg' },
   @{ slug = 'cyberpunk-2077'; url = 'https://cdn.cloudflare.steamstatic.com/steam/apps/1091500/capsule_616x353.jpg' },
   @{ slug = 'dead-by-daylight'; url = 'https://cdn.cloudflare.steamstatic.com/steam/apps/381210/capsule_616x353.jpg' },
