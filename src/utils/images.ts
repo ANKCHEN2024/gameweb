@@ -34,3 +34,22 @@ export function getGameAccentGradient(slug: GameSlug): string {
   const meta = GAMES[slug];
   return `linear-gradient(135deg, ${meta.accentFrom} 0%, ${meta.accentTo} 100%)`;
 }
+
+/** Wide Steam header strip — good for guide list banners */
+export function getGameBannerUrl(slug: GameSlug): string {
+  const meta = GAMES[slug];
+
+  if ('steamAppId' in meta && meta.steamAppId) {
+    return getSteamHeaderUrl(meta.steamAppId);
+  }
+
+  if ('coverUrl' in meta && meta.coverUrl) {
+    return meta.coverUrl;
+  }
+
+  return `/images/games/${slug}.svg`;
+}
+
+export function getGameAccentColor(slug: GameSlug): string {
+  return GAMES[slug].accentFrom;
+}
