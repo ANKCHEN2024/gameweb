@@ -12,33 +12,36 @@ interface Props {
 const { guides, showGame = true } = Astro.props;
 ---
 
-<div class="grid gap-6 md:grid-cols-2" data-guide-list>
+<div class="grid gap-6 sm:grid-cols-2 xl:grid-cols-3" data-guide-list>
   {
     guides.map((guide) => {
       const gameMeta = getGameMeta(guide.data.game);
       const gameSlug = guide.data.game as GameSlug;
       return (
         <article
-          class="group overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-elevated)] transition hover:border-[var(--color-accent)]/50 hover:shadow-lg hover:shadow-black/20"
+          class="group flex h-full flex-col overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-elevated)] transition hover:border-[var(--color-accent)]/50 hover:shadow-lg hover:shadow-black/20"
           data-guide-card
           data-game={guide.data.game}
           data-tags={guide.data.tags.join(',')}
           data-title={guide.data.title.toLowerCase()}
         >
-          <a href={getGuideUrl(guide)} class="flex flex-col sm:flex-row">
-            <div class="sm:w-44 md:w-52 shrink-0">
-              <GameImage slug={gameSlug} title={gameMeta.title} variant="thumb" class="h-full sm:min-h-full" />
-            </div>
-            <div class="flex min-w-0 flex-1 flex-col p-5">
+          <a href={getGuideUrl(guide)} class="flex h-full flex-col">
+            <GameImage slug={gameSlug} title={gameMeta.title} variant="card" />
+            <div class="flex flex-1 flex-col p-5">
               {showGame && (
                 <p class="text-xs font-medium uppercase tracking-wide text-[var(--color-accent)]">
                   {gameMeta.title}
                 </p>
               )}
-              <h2 class:list={['text-lg font-bold text-white group-hover:text-[var(--color-accent)]', showGame && 'mt-1']}>
+              <h2
+                class:list={[
+                  'break-words text-lg font-bold leading-snug text-white group-hover:text-[var(--color-accent)]',
+                  showGame && 'mt-1',
+                ]}
+              >
                 {guide.data.title}
               </h2>
-              <p class="mt-2 line-clamp-2 text-sm text-[var(--color-text-muted)]">
+              <p class="mt-2 line-clamp-3 break-words text-sm leading-relaxed text-[var(--color-text-muted)]">
                 {guide.data.description}
               </p>
               {
