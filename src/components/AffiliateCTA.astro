@@ -1,0 +1,30 @@
+---
+interface Props {
+  gameTitle: string;
+  steamUrl: string;
+  affiliateLabel: string;
+}
+
+const { gameTitle, steamUrl, affiliateLabel } = Astro.props;
+---
+
+<section
+  class="my-10 rounded-2xl border border-[var(--color-accent)]/30 bg-gradient-to-br from-[var(--color-surface-muted)] to-[var(--color-surface-elevated)] p-6"
+>
+  <p class="text-sm font-medium uppercase tracking-wide text-[var(--color-accent)]">
+    Recommended purchase
+  </p>
+  <h2 class="mt-2 text-2xl font-bold text-white">Ready to play {gameTitle}?</h2>
+  <p class="mt-3 text-[var(--color-text-muted)]">
+  If this guide helped you, consider picking up the game. Purchases through our link may support
+  the site at no extra cost to you.
+  </p>
+  <a
+    href={steamUrl}
+    rel="sponsored nofollow noopener noreferrer"
+    target="_blank"
+    class="mt-5 inline-flex items-center rounded-xl bg-[var(--color-accent)] px-5 py-3 text-sm font-semibold text-[var(--color-surface)] transition hover:bg-[var(--color-accent-strong)]"
+  >
+    {affiliateLabel}
+  </a>
+</section>

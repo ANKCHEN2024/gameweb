@@ -1,0 +1,38 @@
+---
+import type { GameSlug } from '../consts';
+
+interface Props {
+  slug: GameSlug;
+  title: string;
+  description: string;
+  guideCount: number;
+  trending?: boolean;
+  releaseDate?: string;
+}
+
+const { slug, title, description, guideCount, trending = false, releaseDate } =
+  Astro.props;
+---
+
+<a
+  href={`/games/${slug}/`}
+  class="block rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-elevated)] p-6 transition hover:border-[var(--color-accent)]/40"
+  data-game-card
+  data-game-title={title.toLowerCase()}
+>
+  <div class="flex items-start justify-between gap-3">
+    <h3 class="text-xl font-bold text-white">{title}</h3>
+  </div>
+  {
+    trending && (
+      <span class="mt-2 inline-block rounded-full bg-[var(--color-accent)]/15 px-2.5 py-0.5 text-xs font-medium text-[var(--color-accent)]">
+        Trending
+      </span>
+    )
+  }
+  <p class="mt-3 text-sm text-[var(--color-text-muted)]">{description}</p>
+  <div class="mt-4 flex flex-wrap items-center gap-3 text-xs text-[var(--color-text-muted)]">
+    <span class="text-[var(--color-accent)]">{guideCount} guides</span>
+    {releaseDate && <span>Released {releaseDate}</span>}
+  </div>
+</a>

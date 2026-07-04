@@ -1,0 +1,56 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../consts';
+---
+
+<BaseLayout
+  title="Affiliate Disclosure"
+  description="Affiliate Disclosure for SavePoint Guides in compliance with FTC guidelines."
+  canonicalPath="/affiliate-disclosure/"
+>
+  <section class="mx-auto max-w-3xl px-4 py-14">
+    <h1 class="text-4xl font-bold text-white">Affiliate Disclosure</h1>
+    <p class="mt-4 text-sm text-[var(--color-text-muted)]">
+      Last updated: March 28, 2026
+    </p>
+
+    <div class="prose-guide mt-8">
+      <p>
+        {SITE.title} participates in affiliate programs. This means some links on our site are
+        affiliate links. If you click a link and make a purchase, we may earn a commission at no
+        additional cost to you.
+      </p>
+
+      <h2>Why we use affiliate links</h2>
+      <p>
+        Affiliate revenue helps us keep guides free, cover hosting costs, and fund updates when
+        games receive patches or new content.
+      </p>
+
+      <h2>Our editorial independence</h2>
+      <p>
+        Affiliate partnerships do not determine our recommendations. We recommend products and
+        games based on player value, not commission rates.
+      </p>
+
+      <h2>Partners we may link to</h2>
+      <ul>
+        <li>Steam and other PC game stores</li>
+        <li>Humble Bundle and similar key sellers</li>
+        <li>Amazon Associates for games and gaming accessories</li>
+      </ul>
+
+      <h2>FTC compliance</h2>
+      <p>
+        In accordance with the U.S. Federal Trade Commission (FTC) guidelines, we disclose that
+        we may receive compensation for qualifying purchases made through links on this website.
+      </p>
+
+      <h2>Questions</h2>
+      <p>
+        If you have questions about this disclosure, contact us before launch using your official
+        support email.
+      </p>
+    </div>
+  </section>
+</BaseLayout>

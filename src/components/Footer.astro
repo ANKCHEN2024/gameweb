@@ -1,0 +1,46 @@
+---
+import { SITE } from '../consts';
+---
+
+<footer class="mt-16 border-t border-[var(--color-border)] bg-[var(--color-surface-elevated)]">
+  <div class="mx-auto max-w-6xl px-4 py-10">
+    <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      <div>
+        <p class="font-semibold text-white">{SITE.title}</p>
+        <p class="mt-2 text-sm text-[var(--color-text-muted)]">{SITE.description}</p>
+      </div>
+
+      <div>
+        <p class="font-semibold text-white">Legal</p>
+        <ul class="mt-2 space-y-2 text-sm">
+          <li>
+            <a href="/privacy-policy/" class="text-[var(--color-text-muted)] hover:text-white">
+              Privacy Policy
+            </a>
+          </li>
+          <li>
+            <a
+              href="/affiliate-disclosure/"
+              class="text-[var(--color-text-muted)] hover:text-white"
+            >
+              Affiliate Disclosure
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <p class="font-semibold text-white">Monetization notice</p>
+        <p class="mt-2 text-sm text-[var(--color-text-muted)]">
+          Some links on this site are affiliate links. We may earn a commission at no extra cost
+          to you. See our Affiliate Disclosure for details.
+        </p>
+      </div>
+    </div>
+
+    <p class="mt-8 border-t border-[var(--color-border)] pt-6 text-sm text-[var(--color-text-muted)]">
+      © {new Date().getFullYear()} {SITE.title}. All game names and trademarks belong to their
+      respective owners.
+    </p>
+  </div>
+</footer>

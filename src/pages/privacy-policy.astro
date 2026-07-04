@@ -1,0 +1,68 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../consts';
+---
+
+<BaseLayout
+  title="Privacy Policy"
+  description="Privacy Policy for SavePoint Guides, including cookies, analytics, and advertising."
+  canonicalPath="/privacy-policy/"
+>
+  <section class="mx-auto max-w-3xl px-4 py-14">
+    <h1 class="text-4xl font-bold text-white">Privacy Policy</h1>
+    <p class="mt-4 text-sm text-[var(--color-text-muted)]">
+      Last updated: March 28, 2026
+    </p>
+
+    <div class="prose-guide mt-8">
+      <p>
+        This Privacy Policy explains how {SITE.title} ("we", "us", or "our") collects, uses, and
+        shares information when you visit {SITE.url}.
+      </p>
+
+      <h2>Information we collect</h2>
+      <p>
+        We may collect standard log data such as browser type, pages visited, referring URLs, and
+        approximate location derived from IP address. If you subscribe to a newsletter or contact
+        form, we collect the information you submit.
+      </p>
+
+      <h2>Cookies and analytics</h2>
+      <p>
+        We may use cookies and similar technologies for analytics (such as Google Analytics) and
+        advertising (such as Google AdSense). You can control cookies through your browser settings.
+      </p>
+
+      <h2>Advertising partners</h2>
+      <p>
+        Third-party vendors, including Google, may use cookies to serve ads based on your prior
+        visits to this website or other websites. You can opt out of personalized advertising by
+        visiting Google Ads Settings.
+      </p>
+
+      <h2>Affiliate links</h2>
+      <p>
+        Outbound affiliate links may use tracking parameters so partners can attribute purchases.
+        See our <a href="/affiliate-disclosure/">Affiliate Disclosure</a>.
+      </p>
+
+      <h2>Data retention</h2>
+      <p>
+        We retain information only as long as needed for the purposes described in this policy or
+        as required by law.
+      </p>
+
+      <h2>Your rights</h2>
+      <p>
+        Depending on your region, you may have rights to access, correct, or delete personal data.
+        Contact us to make a request.
+      </p>
+
+      <h2>Changes</h2>
+      <p>
+        We may update this policy from time to time. Material changes will be posted on this page
+        with a revised date.
+      </p>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,36 @@
+---
+import GuideLayout from '../../layouts/GuideLayout.astro';
+import { getEntry, render } from 'astro:content';
+import {
+  getPublishedGuides,
+  getRelatedGuides,
+  getGuideSlug,
+} from '../../utils/guides';
+
+export async function getStaticPaths() {
+  const guides = await getPublishedGuides();
+
+  return guides.map((guide) => ({
+    params: { slug: getGuideSlug(guide) },
+    props: { id: guide.id },
+  }));
+}
+
+const { id } = Astro.props;
+const guide = await getEntry('guides', id);
+
+if (!guide) {
+  return Astro.redirect('/404');
+}
+
+const allGuides = await getPublishedGuides();
+const relatedGuides = getRelatedGuides(guide, allGuides);
+const { Content, headings } = await render(guide);
+---
+
+<GuideLayout
+  guide={guide}
+  relatedGuides={relatedGuides}
+  headings={headings}
+  Content={Content}
+/>

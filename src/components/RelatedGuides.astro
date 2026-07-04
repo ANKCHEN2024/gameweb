@@ -1,0 +1,38 @@
+---
+import type { GuideEntry } from '../utils/guides';
+import { formatDate, getGameMeta, getGuideUrl } from '../utils/guides';
+
+interface Props {
+  guides: GuideEntry[];
+}
+
+const { guides } = Astro.props;
+---
+
+{
+  guides.length > 0 && (
+    <section class="mt-12 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-elevated)] p-6">
+      <h2 class="text-xl font-bold text-white">Related guides</h2>
+      <ul class="mt-4 space-y-4">
+        {guides.map((guide) => {
+          const gameMeta = getGameMeta(guide.data.game);
+          return (
+            <li>
+              <a href={getGuideUrl(guide)} class="group block">
+                <p class="text-xs uppercase tracking-wide text-[var(--color-accent)]">
+                  {gameMeta.title}
+                </p>
+                <p class="mt-1 font-medium text-white group-hover:text-[var(--color-accent)]">
+                  {guide.data.title}
+                </p>
+                <p class="mt-1 text-sm text-[var(--color-text-muted)]">
+                  {formatDate(guide.data.publishedAt)}
+                </p>
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </section>
+  )
+}

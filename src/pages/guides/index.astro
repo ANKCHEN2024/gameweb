@@ -1,0 +1,112 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import GuideCard from '../../components/GuideCard.astro';
+import { getPublishedGuides, getAllGames } from '../../utils/guides';
+
+const guides = await getPublishedGuides();
+const allGames = getAllGames();
+---
+
+<BaseLayout
+  title="All Guides"
+  description="Browse every SavePoint guide — filter by game or search for builds, bosses, and tips."
+  canonicalPath="/guides/"
+>
+  <section class="border-b border-[var(--color-border)] bg-[var(--color-surface-elevated)]">
+    <div class="mx-auto max-w-6xl px-4 py-14">
+      <h1 class="text-4xl font-bold text-white">All Guides</h1>
+      <p class="mt-4 max-w-2xl text-lg text-[var(--color-text-muted)]">
+        {guides.length} walkthroughs across {allGames.length} trending games. Filter by game or
+        use <a href="/search/" class="text-[var(--color-accent)] hover:underline">search</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-4 py-10">
+    <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+      <div class="flex flex-wrap gap-2" id="game-tabs" role="tablist" aria-label="Filter by game">
+        <button
+          type="button"
+          data-filter="all"
+          class="guide-tab rounded-full bg-[var(--color-accent)] px-4 py-1.5 text-sm font-medium text-[var(--color-surface)]"
+          aria-pressed="true"
+        >
+          All ({guides.length})
+        </button>
+        {
+          allGames.map(({ slug, meta }) => {
+            const count = guides.filter((g) => g.data.game === slug).length;
+            return (
+              <button
+                type="button"
+                data-filter={slug}
+                class="guide-tab rounded-full border border-[var(--color-border)] bg-[var(--color-surface-muted)] px-4 py-1.5 text-sm text-[var(--color-text-muted)] hover:text-white"
+                aria-pressed="false"
+              >
+                {meta.title} ({count})
+              </button>
+            );
+          })
+        }
+      </div>
+      <input
+        id="guide-text-filter"
+        type="search"
+        placeholder="Filter by title..."
+        class="w-full max-w-xs rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-muted)] px-4 py-2 text-sm text-white placeholder:text-[var(--color-text-muted)] focus:border-[var(--color-accent)] focus:outline-none sm:w-64"
+      />
+    </div>
+
+    <div class="mt-10">
+      <GuideCard guides={guides} />
+    </div>
+    <p id="no-guides-msg" class="mt-6 hidden text-[var(--color-text-muted)]" role="status">
+      No guides match your filter.
+    </p>
+  </section>
+
+  <script>
+    const tabs = document.querySelectorAll('.guide-tab');
+    const cards = document.querySelectorAll('[data-guide-card]');
+    const textFilter = document.getElementById('guide-text-filter') as HTMLInputElement;
+    const noMsg = document.getElementById('no-guides-msg');
+    let activeGame = 'all';
+
+    function applyFilters() {
+      const query = textFilter?.value.trim().toLowerCase() ?? '';
+      let visible = 0;
+
+      cards.forEach((card) => {
+        const el = card as HTMLElement;
+        const game = el.getAttribute('data-game') ?? '';
+        const title = el.getAttribute('data-title') ?? '';
+        const gameMatch = activeGame === 'all' || game === activeGame;
+        const textMatch = !query || title.includes(query);
+        const show = gameMatch && textMatch;
+        el.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+
+      noMsg?.classList.toggle('hidden', visible > 0);
+    }
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        activeGame = tab.getAttribute('data-filter') ?? 'all';
+        tabs.forEach((t) => {
+          const isActive = t === tab;
+          t.setAttribute('aria-pressed', String(isActive));
+          t.classList.toggle('bg-[var(--color-accent)]', isActive);
+          t.classList.toggle('text-[var(--color-surface)]', isActive);
+          t.classList.toggle('font-medium', isActive);
+          t.classList.toggle('border', !isActive);
+          t.classList.toggle('bg-[var(--color-surface-muted)]', !isActive);
+          t.classList.toggle('text-[var(--color-text-muted)]', !isActive);
+        });
+        applyFilters();
+      });
+    });
+
+    textFilter?.addEventListener('input', applyFilters);
+  </script>
+</BaseLayout>

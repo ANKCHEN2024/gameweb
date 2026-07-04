@@ -1,0 +1,87 @@
+---
+import '../styles/global.css';
+import { SITE } from '../consts';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  canonicalPath?: string;
+  ogType?: 'website' | 'article';
+  publishedAt?: Date;
+  updatedAt?: Date;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+}
+
+const {
+  title,
+  description = SITE.description,
+  canonicalPath = Astro.url.pathname,
+  ogType = 'website',
+  publishedAt,
+  updatedAt,
+  jsonLd,
+} = Astro.props;
+
+const pageTitle = title ? `${title} | ${SITE.title}` : SITE.title;
+const canonicalUrl = new URL(canonicalPath, SITE.url).href;
+
+const defaultJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: SITE.title,
+  url: SITE.url,
+  description: SITE.description,
+};
+
+const structuredData = jsonLd ?? defaultJsonLd;
+const structuredDataList = Array.isArray(structuredData)
+  ? structuredData
+  : [structuredData];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:site_name" content={SITE.title} />
+    <meta property="og:locale" content={SITE.locale} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    {
+      publishedAt && (
+        <meta property="article:published_time" content={publishedAt.toISOString()} />
+      )
+    }
+    {
+      updatedAt && (
+        <meta property="article:modified_time" content={updatedAt.toISOString()} />
+      )
+    }
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    {
+      structuredDataList.map((item) => (
+        <script type="application/ld+json" set:html={JSON.stringify(item)} />
+      ))
+    }
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <Header />
+    <main class="flex-1">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

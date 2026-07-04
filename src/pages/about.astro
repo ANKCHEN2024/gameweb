@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../consts';
+---
+
+<BaseLayout
+  title="About"
+  description="Learn about SavePoint Guides, our editorial standards, and how we help English-speaking players worldwide."
+  canonicalPath="/about/"
+>
+  <section class="mx-auto max-w-3xl px-4 py-14">
+    <h1 class="text-4xl font-bold text-white">About {SITE.title}</h1>
+    <div class="prose-guide mt-8">
+      <p>
+        {SITE.title} publishes English guides for trending Steam games — the titles players are
+        searching for right now. We focus on builds, boss strategies, perk guides, and buying
+        advice while competition is still low.
+      </p>
+      <h2>Editorial focus</h2>
+      <p>
+        We prioritize hot releases and Steam chart climbers over evergreen back-catalog games.
+        When a title cools off, we stop adding content and shift to the next trending game.
+        Guides are checked against patch notes, wikis, and community reports.
+      </p>
+      <h2>How we make money</h2>
+      <p>
+        This site may display ads and include affiliate links to stores such as Steam and Amazon.
+        If you purchase through those links, we may earn a commission at no extra cost to you.
+        Read our <a href="/affiliate-disclosure/">Affiliate Disclosure</a> for details.
+      </p>
+      <h2>Contact</h2>
+      <p>
+        For corrections or partnership inquiries, replace this placeholder with your business email
+        before launch.
+      </p>
+    </div>
+  </section>
+</BaseLayout>

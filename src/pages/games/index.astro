@@ -1,0 +1,112 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import GameHubCard from '../../components/GameHubCard.astro';
+import { getPublishedGuides, getTrendingGames, getAllGames } from '../../utils/guides';
+
+const guides = await getPublishedGuides();
+const trendingGames = getTrendingGames();
+const allGames = getAllGames();
+
+function countGuides(gameSlug: string) {
+  return guides.filter((g) => g.data.game === gameSlug).length;
+}
+---
+
+<BaseLayout
+  title="All Games"
+  description="Browse trending Steam games with in-depth guides, builds, and walkthroughs."
+  canonicalPath="/games/"
+>
+  <section class="border-b border-[var(--color-border)] bg-[var(--color-surface-elevated)]">
+    <div class="mx-auto max-w-6xl px-4 py-14">
+      <h1 class="text-4xl font-bold text-white">Game Guides</h1>
+      <p class="mt-4 max-w-2xl text-lg text-[var(--color-text-muted)]">
+        Hot releases and trending Steam titles. Use search or filter to find a game hub.
+      </p>
+      <div class="mt-6 flex flex-wrap gap-3">
+        <a
+          href="/guides/"
+          class="rounded-lg bg-[var(--color-accent)] px-4 py-2 text-sm font-medium text-[var(--color-surface)]"
+        >
+          Browse all guides
+        </a>
+        <a href="/search/" class="rounded-lg border border-[var(--color-border)] px-4 py-2 text-sm text-[var(--color-text-muted)] hover:text-white">
+          Search guides
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-4 py-10">
+    <label for="game-filter" class="text-sm font-medium text-white">Filter games</label>
+    <input
+      id="game-filter"
+      type="search"
+      placeholder="Type a game name..."
+      class="mt-2 w-full max-w-md rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-muted)] px-4 py-2 text-sm text-white placeholder:text-[var(--color-text-muted)] focus:border-[var(--color-accent)] focus:outline-none"
+    />
+  </section>
+
+  <section class="mx-auto max-w-6xl px-4 pb-8">
+    <h2 class="text-2xl font-bold text-white">Trending now</h2>
+    <div class="mt-6 grid gap-6 md:grid-cols-2 lg:grid-cols-4" id="trending-grid">
+      {
+        trendingGames.map(({ slug, meta }) => (
+          <GameHubCard
+            slug={slug}
+            title={meta.title}
+            description={meta.description}
+            guideCount={countGuides(slug)}
+            trending
+            releaseDate={meta.releaseDate}
+          />
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-4 pb-16">
+    <h2 class="text-2xl font-bold text-white">All games</h2>
+    <div class="mt-6 grid gap-6 md:grid-cols-2 lg:grid-cols-3" id="all-games-grid">
+      {
+        allGames.map(({ slug, meta }) => (
+          <GameHubCard
+            slug={slug}
+            title={meta.title}
+            description={meta.description}
+            guideCount={countGuides(slug)}
+            trending={meta.trending}
+            releaseDate={meta.releaseDate}
+          />
+        ))
+      }
+    </div>
+    <p
+      id="no-games-message"
+      class="mt-6 hidden text-[var(--color-text-muted)]"
+      role="status"
+    >
+      No games match your search.
+    </p>
+  </section>
+
+  <script>
+    const filterInput = document.getElementById('game-filter') as HTMLInputElement;
+    const cards = document.querySelectorAll('[data-game-card]');
+    const noResults = document.getElementById('no-games-message');
+
+    filterInput?.addEventListener('input', () => {
+      const query = filterInput.value.trim().toLowerCase();
+      let visible = 0;
+
+      cards.forEach((card) => {
+        const title = card.getAttribute('data-game-title') ?? '';
+        const show = !query || title.includes(query);
+        (card as HTMLElement).style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+
+      noResults?.classList.toggle('hidden', visible > 0);
+    });
+  </script>
+</BaseLayout>

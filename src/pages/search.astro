@@ -1,0 +1,95 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SearchBar from '../components/SearchBar.astro';
+---
+
+<BaseLayout
+  title="Search"
+  description="Search SavePoint Guides for trending game walkthroughs, builds, and tips."
+  canonicalPath="/search/"
+>
+  <section class="mx-auto max-w-3xl px-4 py-14">
+    <h1 class="text-4xl font-bold text-white">Search guides</h1>
+    <p class="mt-4 text-[var(--color-text-muted)]">
+      Find guides across all trending games.
+    </p>
+
+    <div class="mt-8">
+      <SearchBar id="page-search" placeholder="Search by game, boss, build..." />
+    </div>
+
+    <div id="search-results" class="mt-10 space-y-4"></div>
+    <p id="search-status" class="mt-6 text-sm text-[var(--color-text-muted)]"></p>
+  </section>
+
+  <script is:inline>
+    async function runSearch(query) {
+      const resultsEl = document.getElementById('search-results');
+      const statusEl = document.getElementById('search-status');
+      if (!resultsEl || !statusEl) return;
+
+      resultsEl.innerHTML = '';
+      statusEl.textContent = 'Searching...';
+
+      if (!query.trim()) {
+        statusEl.textContent = 'Enter a keyword to search guides.';
+        return;
+      }
+
+      try {
+        const pagefind = await import('/pagefind/pagefind.js');
+        const search = await pagefind.search(query);
+        const data = await Promise.all(search.results.map((r) => r.data()));
+
+        if (data.length === 0) {
+          statusEl.textContent = 'No results for "' + query + '".';
+          return;
+        }
+
+        statusEl.textContent = data.length + ' result(s) for "' + query + '"';
+
+        data.forEach((result) => {
+          const article = document.createElement('article');
+          article.className =
+            'rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-elevated)] p-5';
+
+          const link = document.createElement('a');
+          link.href = result.url;
+          link.className = 'text-lg font-semibold text-white hover:text-[var(--color-accent)]';
+          link.textContent = result.meta.title || result.url;
+
+          const excerpt = document.createElement('p');
+          excerpt.className = 'mt-2 text-sm text-[var(--color-text-muted)]';
+          excerpt.textContent = result.excerpt;
+
+          article.append(link, excerpt);
+          resultsEl.append(article);
+        });
+      } catch {
+        statusEl.textContent =
+          'Search index not available. Run npm run build to generate the search index.';
+      }
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    const initialQuery = params.get('q') || '';
+    const searchInput = document.getElementById('page-search');
+
+    if (searchInput && initialQuery) {
+      searchInput.value = initialQuery;
+    }
+
+    runSearch(initialQuery);
+
+    searchInput?.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        const query = searchInput.value;
+        const url = new URL(window.location.href);
+        url.searchParams.set('q', query);
+        window.history.replaceState({}, '', url);
+        runSearch(query);
+      }
+    });
+  </script>
+</BaseLayout>

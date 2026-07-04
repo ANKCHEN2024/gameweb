@@ -1,0 +1,88 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import GuideCard from '../../components/GuideCard.astro';
+import GameGuideNav from '../../components/GameGuideNav.astro';
+import AffiliateCTA from '../../components/AffiliateCTA.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { GAMES, type GameSlug } from '../../consts';
+import { getGuidesByGame, getGuideUrl } from '../../utils/guides';
+
+export function getStaticPaths() {
+  const gameSlugs = Object.keys(GAMES) as GameSlug[];
+
+  return gameSlugs.map((game) => ({
+    params: { game },
+  }));
+}
+
+const { game } = Astro.params as { game: GameSlug };
+const gameMeta = GAMES[game];
+const guides = await getGuidesByGame(game);
+const guideNav = guides.map((g) => ({
+  title: g.data.title,
+  href: getGuideUrl(g),
+}));
+---
+
+<BaseLayout
+  title={`${gameMeta.title} Guides`}
+  description={gameMeta.description}
+  canonicalPath={`/games/${game}/`}
+>
+  <section class="border-b border-[var(--color-border)] bg-[var(--color-surface-elevated)]">
+    <div class="mx-auto max-w-6xl px-4 py-14">
+      <Breadcrumbs
+        items={[
+          { label: 'Home', href: '/' },
+          { label: 'Games', href: '/games/' },
+          { label: gameMeta.title },
+        ]}
+      />
+      <p class="mt-4 text-sm font-medium uppercase tracking-wider text-[var(--color-accent)]">
+        Game hub · {guides.length} guides
+      </p>
+      <h1 class="mt-2 text-4xl font-bold text-white">{gameMeta.title} Guides</h1>
+      <p class="mt-4 max-w-2xl text-lg text-[var(--color-text-muted)]">
+        {gameMeta.description}
+      </p>
+      <div class="mt-6 flex flex-wrap gap-3">
+        <a
+          href="/guides/"
+          class="rounded-lg border border-[var(--color-border)] px-4 py-2 text-sm text-[var(--color-text-muted)] hover:text-white"
+        >
+          Browse all guides
+        </a>
+        <a
+          href={`/search/?q=${encodeURIComponent(gameMeta.title)}`}
+          class="rounded-lg border border-[var(--color-border)] px-4 py-2 text-sm text-[var(--color-text-muted)] hover:text-white"
+        >
+          Search {gameMeta.title}
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-4 py-14">
+    <div class="grid gap-10 lg:grid-cols-[240px_minmax(0,1fr)]">
+      <aside class="lg:sticky lg:top-24 lg:self-start">
+        <GameGuideNav guides={guideNav} gameTitle={gameMeta.title} />
+      </aside>
+
+      <div>
+        {
+          guides.length > 0 ? (
+            <GuideCard guides={guides} showGame={false} />
+          ) : (
+            <p class="text-[var(--color-text-muted)]">Guides coming soon.</p>
+          )
+        }
+
+        <AffiliateCTA
+          gameTitle={gameMeta.title}
+          steamUrl={gameMeta.steamUrl}
+          affiliateLabel={gameMeta.affiliateLabel}
+        />
+      </div>
+    </div>
+  </section>
+</BaseLayout>

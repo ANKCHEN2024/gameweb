@@ -1,0 +1,109 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import GuideCard from '../components/GuideCard.astro';
+import GameHubCard from '../components/GameHubCard.astro';
+import { SITE } from '../consts';
+import { getPublishedGuides, getTrendingGames, getPopularTags } from '../utils/guides';
+
+const guides = await getPublishedGuides();
+const latestGuides = guides.slice(0, 12);
+const trendingGames = getTrendingGames();
+const popularTags = getPopularTags(guides, 10);
+
+function countGuides(gameSlug: string) {
+  return guides.filter((g) => g.data.game === gameSlug).length;
+}
+---
+
+<BaseLayout>
+  <section class="border-b border-[var(--color-border)] bg-[var(--color-surface-elevated)]">
+    <div class="mx-auto max-w-6xl px-4 py-16">
+      <p class="text-sm font-medium uppercase tracking-wider text-[var(--color-accent)]">
+        Trending Steam games — updated weekly
+      </p>
+      <h1 class="mt-3 max-w-3xl text-4xl font-bold text-white sm:text-5xl">
+        Guides for the games players are searching right now
+      </h1>
+      <p class="mt-5 max-w-2xl text-lg text-[var(--color-text-muted)]">
+        {SITE.description}
+      </p>
+      <div class="mt-8 flex flex-wrap items-center gap-4 text-sm">
+        <p class="text-[var(--color-text-muted)]">
+          <span class="font-semibold text-white">{guides.length}</span> guides
+        </p>
+        <p class="text-[var(--color-text-muted)]">
+          <span class="font-semibold text-white">{trendingGames.length}</span> games
+        </p>
+        <a
+          href="/guides/"
+          class="rounded-lg bg-[var(--color-accent)] px-4 py-2 font-medium text-[var(--color-surface)] hover:bg-[var(--color-accent-strong)]"
+        >
+          Browse all guides
+        </a>
+        <a href="/games/" class="text-[var(--color-accent)] hover:underline">All games</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-4 py-14">
+    <div class="flex items-end justify-between gap-4">
+      <div>
+        <h2 class="text-2xl font-bold text-white">Trending now</h2>
+        <p class="mt-2 text-[var(--color-text-muted)]">
+          Hot Steam releases with fresh guides and low competition keywords.
+        </p>
+      </div>
+      <a href="/games/" class="text-sm text-[var(--color-accent)] hover:underline">View all</a>
+    </div>
+
+    <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        trendingGames.map(({ slug, meta }) => (
+          <GameHubCard
+            slug={slug}
+            title={meta.title}
+            description={meta.description}
+            guideCount={countGuides(slug)}
+            trending
+            releaseDate={meta.releaseDate}
+          />
+        ))
+      }
+    </div>
+  </section>
+
+  {
+    popularTags.length > 0 && (
+      <section class="mx-auto max-w-6xl px-4 pb-4">
+        <h2 class="text-lg font-semibold text-white">Popular topics</h2>
+        <div class="mt-4 flex flex-wrap gap-2">
+          {popularTags.map((tag) => (
+            <a
+              href={`/search/?q=${encodeURIComponent(tag)}`}
+              class="rounded-full border border-[var(--color-border)] bg-[var(--color-surface-elevated)] px-3 py-1 text-sm text-[var(--color-text-muted)] hover:border-[var(--color-accent)]/40 hover:text-white"
+            >
+              {tag}
+            </a>
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  <section class="mx-auto max-w-6xl px-4 pb-16 pt-10">
+    <div class="flex items-end justify-between gap-4">
+      <div>
+        <h2 class="text-2xl font-bold text-white">Latest guides</h2>
+        <p class="mt-2 text-[var(--color-text-muted)]">
+          New walkthroughs, builds, and buying advice across trending titles.
+        </p>
+      </div>
+      <a href="/guides/" class="text-sm text-[var(--color-accent)] hover:underline">
+        View all {guides.length}
+      </a>
+    </div>
+    <div class="mt-8">
+      <GuideCard guides={latestGuides} />
+    </div>
+  </section>
+</BaseLayout>

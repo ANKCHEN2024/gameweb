@@ -1,0 +1,83 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Segoe UI", system-ui, -apple-system, sans-serif;
+  --color-surface: #0f1419;
+  --color-surface-elevated: #1a2332;
+  --color-surface-muted: #243044;
+  --color-accent: #6ee7b7;
+  --color-accent-strong: #34d399;
+  --color-text: #e8edf5;
+  --color-text-muted: #9aa8bc;
+  --color-border: #2d3a4f;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-[var(--color-surface)] text-[var(--color-text)] antialiased;
+}
+
+.prose-guide {
+  @apply text-[var(--color-text)] leading-7;
+}
+
+.prose-guide h2 {
+  @apply mt-10 mb-4 scroll-mt-24 text-2xl font-bold text-white border-b border-[var(--color-border)] pb-2;
+}
+
+.prose-guide h3 {
+  @apply mt-8 mb-3 scroll-mt-24 text-xl font-semibold text-white;
+}
+
+.prose-guide p {
+  @apply mb-4 text-[var(--color-text-muted)];
+}
+
+.prose-guide ul,
+.prose-guide ol {
+  @apply mb-4 ml-6 space-y-2 text-[var(--color-text-muted)];
+}
+
+.prose-guide ul {
+  @apply list-disc;
+}
+
+.prose-guide ol {
+  @apply list-decimal;
+}
+
+.prose-guide li {
+  @apply pl-1;
+}
+
+.prose-guide strong {
+  @apply font-semibold text-white;
+}
+
+.prose-guide a {
+  @apply text-[var(--color-accent)] underline-offset-2 hover:text-[var(--color-accent-strong)] hover:underline;
+}
+
+.prose-guide table {
+  @apply mb-6 w-full overflow-hidden rounded-xl border border-[var(--color-border)] text-sm;
+}
+
+.prose-guide thead {
+  @apply bg-[var(--color-surface-muted)] text-left text-white;
+}
+
+.prose-guide th,
+.prose-guide td {
+  @apply border border-[var(--color-border)] px-4 py-3;
+}
+
+.prose-guide tbody tr:nth-child(even) {
+  @apply bg-[var(--color-surface-elevated)];
+}
+
+.prose-guide blockquote {
+  @apply my-6 rounded-r-xl border-l-4 border-[var(--color-accent)] bg-[var(--color-surface-elevated)] px-4 py-3 text-[var(--color-text-muted)];
+}

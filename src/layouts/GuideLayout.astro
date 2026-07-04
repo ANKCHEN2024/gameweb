@@ -1,0 +1,174 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import TableOfContents from '../components/TableOfContents.astro';
+import RelatedGuides from '../components/RelatedGuides.astro';
+import AffiliateCTA from '../components/AffiliateCTA.astro';
+import FaqSection from '../components/FaqSection.astro';
+import { SITE, GAMES } from '../consts';
+import {
+  formatDate,
+  getGameMeta,
+  getGuideUrl,
+  type GuideEntry,
+} from '../utils/guides';
+
+interface Props {
+  guide: GuideEntry;
+  relatedGuides: GuideEntry[];
+  headings: { depth: number; slug: string; text: string }[];
+  Content: import('astro').MDXContent;
+}
+
+const { guide, relatedGuides, headings, Content } = Astro.props;
+const { title, description, game, publishedAt, updatedAt, faq } = guide.data;
+const gameMeta = getGameMeta(game);
+const guideUrl = getGuideUrl(guide);
+const canonicalUrl = new URL(guideUrl, SITE.url).href;
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Home',
+      item: SITE.url,
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: gameMeta.title,
+      item: new URL(`/games/${game}/`, SITE.url).href,
+    },
+    {
+      '@type': 'ListItem',
+      position: 3,
+      name: title,
+      item: canonicalUrl,
+    },
+  ],
+};
+
+const articleJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title,
+  description,
+  datePublished: publishedAt.toISOString(),
+  dateModified: (updatedAt ?? publishedAt).toISOString(),
+  author: {
+    '@type': 'Organization',
+    name: SITE.author,
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: SITE.title,
+  },
+  mainEntityOfPage: canonicalUrl,
+};
+
+const faqJsonLd =
+  faq.length > 0
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: faq.map((item) => ({
+          '@type': 'Question',
+          name: item.question,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: item.answer,
+          },
+        })),
+      }
+    : null;
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonicalPath={guideUrl}
+  ogType="article"
+  publishedAt={publishedAt}
+  updatedAt={updatedAt}
+  jsonLd={[articleJsonLd, breadcrumbJsonLd, ...(faqJsonLd ? [faqJsonLd] : [])]}
+>
+  <article class="mx-auto max-w-6xl px-4 py-10">
+    <Breadcrumbs
+      items={[
+        { label: 'Home', href: '/' },
+        { label: gameMeta.title, href: `/games/${game}/` },
+        { label: title },
+      ]}
+    />
+
+    <header class="mt-6 max-w-3xl">
+      <p class="text-sm font-medium uppercase tracking-wider text-[var(--color-accent)]">
+        {gameMeta.title}
+      </p>
+      <h1 class="mt-2 text-3xl font-bold text-white sm:text-4xl">{title}</h1>
+      <p class="mt-4 text-lg text-[var(--color-text-muted)]">{description}</p>
+      <div class="mt-4 flex flex-wrap items-center gap-3 text-sm text-[var(--color-text-muted)]">
+        <time datetime={publishedAt.toISOString()}>Published {formatDate(publishedAt)}</time>
+        {
+          updatedAt && (
+            <>
+              <span aria-hidden="true">·</span>
+              <time datetime={updatedAt.toISOString()}>Updated {formatDate(updatedAt)}</time>
+            </>
+          )
+        }
+      </div>
+      {
+        guide.data.tags.length > 0 && (
+          <ul class="mt-4 flex flex-wrap gap-2">
+            {guide.data.tags.map((tag) => (
+              <li class="rounded-full bg-[var(--color-surface-muted)] px-3 py-1 text-xs text-[var(--color-text-muted)]">
+                {tag}
+              </li>
+            ))}
+          </ul>
+        )
+      }
+    </header>
+
+    <div class="mt-10 grid gap-10 lg:grid-cols-[minmax(0,1fr)_240px]">
+      <div class="min-w-0">
+        <div class="prose-guide">
+          <Content />
+        </div>
+
+        <AffiliateCTA
+          gameTitle={gameMeta.title}
+          steamUrl={gameMeta.steamUrl}
+          affiliateLabel={gameMeta.affiliateLabel}
+        />
+
+        {faq.length > 0 && <FaqSection items={faq} />}
+
+        <RelatedGuides guides={relatedGuides} />
+
+        <nav
+          class="mt-10 flex flex-wrap gap-4 border-t border-[var(--color-border)] pt-8 text-sm"
+          aria-label="Guide navigation"
+        >
+          <a
+            href={`/games/${game}/`}
+            class="text-[var(--color-accent)] hover:underline"
+          >
+            ← More {gameMeta.title} guides
+          </a>
+          <a href="/guides/" class="text-[var(--color-text-muted)] hover:text-white">
+            Browse all guides
+          </a>
+        </nav>
+      </div>
+
+      <aside class="lg:sticky lg:top-24 lg:self-start">
+        <TableOfContents headings={headings} />
+      </aside>
+    </div>
+  </article>
+</BaseLayout>
