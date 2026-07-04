@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 616 353" role="img" aria-label="Meccha Chameleon">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#22c55e"/>
+      <stop offset="50%" stop-color="#14b8a6"/>
+      <stop offset="100%" stop-color="#a855f7"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="70%" cy="30%" r="60%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="616" height="353" fill="url(#bg)"/>
+  <rect width="616" height="353" fill="url(#glow)"/>
+  <circle cx="480" cy="120" r="72" fill="#fef08a" opacity="0.9"/>
+  <ellipse cx="420" cy="210" rx="90" ry="55" fill="#166534" opacity="0.55"/>
+  <ellipse cx="180" cy="250" rx="120" ry="40" fill="#052e16" opacity="0.35"/>
+  <text x="40" y="300" fill="#ecfdf5" font-family="Segoe UI, system-ui, sans-serif" font-size="42" font-weight="700">Meccha Chameleon</text>
+  <text x="40" y="330" fill="#d1fae5" font-family="Segoe UI, system-ui, sans-serif" font-size="18" opacity="0.9">Hide &amp; Seek on Steam</text>
+</svg>

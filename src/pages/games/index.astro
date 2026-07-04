@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import GameHubCard from '../../components/GameHubCard.astro';
+import HeroBanner from '../../components/HeroBanner.astro';
 import { getPublishedGuides, getTrendingGames, getAllGames } from '../../utils/guides';
 
 const guides = await getPublishedGuides();
@@ -17,25 +18,25 @@ function countGuides(gameSlug: string) {
   description="Browse trending Steam games with in-depth guides, builds, and walkthroughs."
   canonicalPath="/games/"
 >
-  <section class="border-b border-[var(--color-border)] bg-[var(--color-surface-elevated)]">
-    <div class="mx-auto max-w-6xl px-4 py-14">
-      <h1 class="text-4xl font-bold text-white">Game Guides</h1>
-      <p class="mt-4 max-w-2xl text-lg text-[var(--color-text-muted)]">
-        Hot releases and trending Steam titles. Use search or filter to find a game hub.
-      </p>
-      <div class="mt-6 flex flex-wrap gap-3">
-        <a
-          href="/guides/"
-          class="rounded-lg bg-[var(--color-accent)] px-4 py-2 text-sm font-medium text-[var(--color-surface)]"
-        >
-          Browse all guides
-        </a>
-        <a href="/search/" class="rounded-lg border border-[var(--color-border)] px-4 py-2 text-sm text-[var(--color-text-muted)] hover:text-white">
-          Search guides
-        </a>
-      </div>
+  <HeroBanner
+    title="Game Guides"
+    description="Hot releases and trending Steam titles. Use search or filter to find a game hub."
+  >
+    <div class="flex flex-wrap gap-3">
+      <a
+        href="/guides/"
+        class="rounded-lg bg-[var(--color-accent)] px-4 py-2 text-sm font-medium text-[var(--color-surface)]"
+      >
+        Browse all guides
+      </a>
+      <a
+        href="/search/"
+        class="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)]/60 px-4 py-2 text-sm text-white backdrop-blur hover:border-[var(--color-accent)]/40"
+      >
+        Search guides
+      </a>
     </div>
-  </section>
+  </HeroBanner>
 
   <section class="mx-auto max-w-6xl px-4 py-10">
     <label for="game-filter" class="text-sm font-medium text-white">Filter games</label>

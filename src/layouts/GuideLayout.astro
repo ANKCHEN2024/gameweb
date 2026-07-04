@@ -5,6 +5,7 @@ import TableOfContents from '../components/TableOfContents.astro';
 import RelatedGuides from '../components/RelatedGuides.astro';
 import AffiliateCTA from '../components/AffiliateCTA.astro';
 import FaqSection from '../components/FaqSection.astro';
+import GameImage from '../components/GameImage.astro';
 import { SITE, GAMES } from '../consts';
 import {
   formatDate,
@@ -134,6 +135,10 @@ const faqJsonLd =
       }
     </header>
 
+    <div class="mt-8 overflow-hidden rounded-2xl border border-[var(--color-border)]">
+      <GameImage slug={game} title={gameMeta.title} variant="hero" />
+    </div>
+
     <div class="mt-10 grid gap-10 lg:grid-cols-[minmax(0,1fr)_240px]">
       <div class="min-w-0">
         <div class="prose-guide">
@@ -142,6 +147,7 @@ const faqJsonLd =
 
         <AffiliateCTA
           gameTitle={gameMeta.title}
+          gameSlug={game}
           steamUrl={gameMeta.steamUrl}
           affiliateLabel={gameMeta.affiliateLabel}
         />

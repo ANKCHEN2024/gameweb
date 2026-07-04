@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 616 353" role="img" aria-label="Forza Horizon 6">
+  <defs>
+    <linearGradient id="sky" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1d4ed8"/>
+      <stop offset="55%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#ea580c"/>
+    </linearGradient>
+    <linearGradient id="road" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#111827"/>
+      <stop offset="100%" stop-color="#374151"/>
+    </linearGradient>
+  </defs>
+  <rect width="616" height="353" fill="url(#sky)"/>
+  <ellipse cx="520" cy="80" rx="70" ry="70" fill="#fde68a" opacity="0.95"/>
+  <path d="M0 230 Q200 180 400 220 T616 200 L616 353 L0 353 Z" fill="#15803d" opacity="0.8"/>
+  <path d="M0 260 L616 240 L616 353 L0 353 Z" fill="url(#road)"/>
+  <rect x="120" y="235" width="180" height="36" rx="10" fill="#ef4444" transform="skewX(-18)"/>
+  <rect x="145" y="228" width="90" height="18" rx="4" fill="#fecaca" opacity="0.8" transform="skewX(-18)"/>
+  <text x="40" y="300" fill="#fff7ed" font-family="Segoe UI, system-ui, sans-serif" font-size="42" font-weight="700">Forza Horizon 6</text>
+  <text x="40" y="330" fill="#ffedd5" font-family="Segoe UI, system-ui, sans-serif" font-size="18" opacity="0.9">Open-world racing guides</text>
+</svg>

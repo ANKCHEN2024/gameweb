@@ -1,0 +1,45 @@
+---
+import type { GameSlug } from '../consts';
+import GameImage from './GameImage.astro';
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  description?: string;
+  gameSlug?: GameSlug;
+  gameTitle?: string;
+}
+
+const { eyebrow, title, description, gameSlug, gameTitle } = Astro.props;
+---
+
+<section class="relative overflow-hidden border-b border-[var(--color-border)]">
+  {
+    gameSlug && gameTitle ? (
+      <div class="absolute inset-0">
+        <GameImage slug={gameSlug} title={gameTitle} variant="hero" class="h-full min-h-full" />
+      </div>
+    ) : (
+      <div class="hero-mesh absolute inset-0" aria-hidden="true" />
+    )
+  }
+  <div class="relative bg-[var(--color-surface)]/85 backdrop-blur-sm">
+    <div class="mx-auto max-w-6xl px-4 py-14 sm:py-16">
+      <slot name="breadcrumbs" />
+      {
+        eyebrow && (
+          <p class="mt-4 text-sm font-medium uppercase tracking-wider text-[var(--color-accent)]">
+            {eyebrow}
+          </p>
+        )
+      }
+      <h1 class="mt-2 max-w-3xl text-4xl font-bold text-white sm:text-5xl">{title}</h1>
+      {description && (
+        <p class="mt-4 max-w-2xl text-lg text-[var(--color-text-muted)]">{description}</p>
+      )}
+      <div class="mt-6">
+        <slot />
+      </div>
+    </div>
+  </div>
+</section>

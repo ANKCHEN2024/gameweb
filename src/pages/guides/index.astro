@@ -1,10 +1,12 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import GuideCard from '../../components/GuideCard.astro';
+import HeroBanner from '../../components/HeroBanner.astro';
 import { getPublishedGuides, getAllGames } from '../../utils/guides';
 
 const guides = await getPublishedGuides();
 const allGames = getAllGames();
+const heroDescription = `${guides.length} walkthroughs across ${allGames.length} trending games. Filter by game or use search.`;
 ---
 
 <BaseLayout
@@ -12,15 +14,14 @@ const allGames = getAllGames();
   description="Browse every SavePoint guide — filter by game or search for builds, bosses, and tips."
   canonicalPath="/guides/"
 >
-  <section class="border-b border-[var(--color-border)] bg-[var(--color-surface-elevated)]">
-    <div class="mx-auto max-w-6xl px-4 py-14">
-      <h1 class="text-4xl font-bold text-white">All Guides</h1>
-      <p class="mt-4 max-w-2xl text-lg text-[var(--color-text-muted)]">
-        {guides.length} walkthroughs across {allGames.length} trending games. Filter by game or
-        use <a href="/search/" class="text-[var(--color-accent)] hover:underline">search</a>.
-      </p>
-    </div>
-  </section>
+  <HeroBanner title="All Guides" description={heroDescription}>
+    <a
+      href="/search/"
+      class="inline-flex rounded-lg bg-[var(--color-accent)] px-4 py-2 text-sm font-medium text-[var(--color-surface)]"
+    >
+      Open search
+    </a>
+  </HeroBanner>
 
   <section class="mx-auto max-w-6xl px-4 py-10">
     <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">

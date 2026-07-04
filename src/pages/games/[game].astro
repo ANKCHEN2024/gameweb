@@ -4,6 +4,7 @@ import GuideCard from '../../components/GuideCard.astro';
 import GameGuideNav from '../../components/GameGuideNav.astro';
 import AffiliateCTA from '../../components/AffiliateCTA.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import HeroBanner from '../../components/HeroBanner.astro';
 import { GAMES, type GameSlug } from '../../consts';
 import { getGuidesByGame, getGuideUrl } from '../../utils/guides';
 
@@ -29,38 +30,36 @@ const guideNav = guides.map((g) => ({
   description={gameMeta.description}
   canonicalPath={`/games/${game}/`}
 >
-  <section class="border-b border-[var(--color-border)] bg-[var(--color-surface-elevated)]">
-    <div class="mx-auto max-w-6xl px-4 py-14">
-      <Breadcrumbs
-        items={[
-          { label: 'Home', href: '/' },
-          { label: 'Games', href: '/games/' },
-          { label: gameMeta.title },
-        ]}
-      />
-      <p class="mt-4 text-sm font-medium uppercase tracking-wider text-[var(--color-accent)]">
-        Game hub · {guides.length} guides
-      </p>
-      <h1 class="mt-2 text-4xl font-bold text-white">{gameMeta.title} Guides</h1>
-      <p class="mt-4 max-w-2xl text-lg text-[var(--color-text-muted)]">
-        {gameMeta.description}
-      </p>
-      <div class="mt-6 flex flex-wrap gap-3">
-        <a
-          href="/guides/"
-          class="rounded-lg border border-[var(--color-border)] px-4 py-2 text-sm text-[var(--color-text-muted)] hover:text-white"
-        >
-          Browse all guides
-        </a>
-        <a
-          href={`/search/?q=${encodeURIComponent(gameMeta.title)}`}
-          class="rounded-lg border border-[var(--color-border)] px-4 py-2 text-sm text-[var(--color-text-muted)] hover:text-white"
-        >
-          Search {gameMeta.title}
-        </a>
-      </div>
+  <HeroBanner
+    eyebrow={`Game hub · ${guides.length} guides`}
+    title={`${gameMeta.title} Guides`}
+    description={gameMeta.description}
+    gameSlug={game}
+    gameTitle={gameMeta.title}
+  >
+    <Breadcrumbs
+      slot="breadcrumbs"
+      items={[
+        { label: 'Home', href: '/' },
+        { label: 'Games', href: '/games/' },
+        { label: gameMeta.title },
+      ]}
+    />
+    <div class="flex flex-wrap gap-3">
+      <a
+        href="/guides/"
+        class="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)]/60 px-4 py-2 text-sm text-white backdrop-blur hover:border-[var(--color-accent)]/40"
+      >
+        Browse all guides
+      </a>
+      <a
+        href={`/search/?q=${encodeURIComponent(gameMeta.title)}`}
+        class="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)]/60 px-4 py-2 text-sm text-white backdrop-blur hover:border-[var(--color-accent)]/40"
+      >
+        Search {gameMeta.title}
+      </a>
     </div>
-  </section>
+  </HeroBanner>
 
   <section class="mx-auto max-w-6xl px-4 py-14">
     <div class="grid gap-10 lg:grid-cols-[240px_minmax(0,1fr)]">
@@ -79,6 +78,7 @@ const guideNav = guides.map((g) => ({
 
         <AffiliateCTA
           gameTitle={gameMeta.title}
+          gameSlug={game}
           steamUrl={gameMeta.steamUrl}
           affiliateLabel={gameMeta.affiliateLabel}
         />

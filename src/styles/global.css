@@ -81,3 +81,14 @@ body {
 .prose-guide blockquote {
   @apply my-6 rounded-r-xl border-l-4 border-[var(--color-accent)] bg-[var(--color-surface-elevated)] px-4 py-3 text-[var(--color-text-muted)];
 }
+
+.hero-mesh {
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 20%, color-mix(in srgb, var(--color-accent) 18%, transparent), transparent),
+    radial-gradient(ellipse 60% 50% at 80% 70%, color-mix(in srgb, #3b82f6 14%, transparent), transparent),
+    linear-gradient(180deg, var(--color-surface-elevated) 0%, var(--color-surface) 100%);
+}
+
+.prose-guide img {
+  @apply my-6 w-full rounded-xl border border-[var(--color-border)] shadow-lg shadow-black/20;
+}

@@ -1,5 +1,6 @@
 ---
 import type { GameSlug } from '../consts';
+import GameImage from './GameImage.astro';
 
 interface Props {
   slug: GameSlug;
@@ -16,23 +17,28 @@ const { slug, title, description, guideCount, trending = false, releaseDate } =
 
 <a
   href={`/games/${slug}/`}
-  class="block rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-elevated)] p-6 transition hover:border-[var(--color-accent)]/40"
+  class="group block overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-elevated)] transition hover:border-[var(--color-accent)]/50 hover:shadow-lg hover:shadow-black/20"
   data-game-card
   data-game-title={title.toLowerCase()}
 >
-  <div class="flex items-start justify-between gap-3">
-    <h3 class="text-xl font-bold text-white">{title}</h3>
-  </div>
-  {
-    trending && (
-      <span class="mt-2 inline-block rounded-full bg-[var(--color-accent)]/15 px-2.5 py-0.5 text-xs font-medium text-[var(--color-accent)]">
-        Trending
-      </span>
-    )
-  }
-  <p class="mt-3 text-sm text-[var(--color-text-muted)]">{description}</p>
-  <div class="mt-4 flex flex-wrap items-center gap-3 text-xs text-[var(--color-text-muted)]">
-    <span class="text-[var(--color-accent)]">{guideCount} guides</span>
-    {releaseDate && <span>Released {releaseDate}</span>}
+  <GameImage slug={slug} title={title} variant="card" />
+  <div class="p-5">
+    <div class="flex items-start justify-between gap-3">
+      <h3 class="text-xl font-bold text-white group-hover:text-[var(--color-accent)]">
+        {title}
+      </h3>
+      {
+        trending && (
+          <span class="shrink-0 rounded-full bg-[var(--color-accent)]/15 px-2.5 py-0.5 text-xs font-medium text-[var(--color-accent)]">
+            Trending
+          </span>
+        )
+      }
+    </div>
+    <p class="mt-2 line-clamp-2 text-sm text-[var(--color-text-muted)]">{description}</p>
+    <div class="mt-4 flex flex-wrap items-center gap-3 text-xs text-[var(--color-text-muted)]">
+      <span class="font-medium text-[var(--color-accent)]">{guideCount} guides</span>
+      {releaseDate && <span>Released {releaseDate}</span>}
+    </div>
   </div>
 </a>

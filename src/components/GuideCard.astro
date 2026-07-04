@@ -1,6 +1,8 @@
 ---
 import type { GuideEntry } from '../utils/guides';
+import type { GameSlug } from '../consts';
 import { formatDate, getGameMeta, getGuideUrl } from '../utils/guides';
+import GameImage from './GameImage.astro';
 
 interface Props {
   guides: GuideEntry[];
@@ -14,41 +16,47 @@ const { guides, showGame = true } = Astro.props;
   {
     guides.map((guide) => {
       const gameMeta = getGameMeta(guide.data.game);
+      const gameSlug = guide.data.game as GameSlug;
       return (
         <article
-          class="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-elevated)] p-6 transition hover:border-[var(--color-accent)]/40"
+          class="group overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-elevated)] transition hover:border-[var(--color-accent)]/50 hover:shadow-lg hover:shadow-black/20"
           data-guide-card
           data-game={guide.data.game}
           data-tags={guide.data.tags.join(',')}
           data-title={guide.data.title.toLowerCase()}
         >
-          {showGame && (
-            <p class="text-xs font-medium uppercase tracking-wide text-[var(--color-accent)]">
-              <a href={`/games/${guide.data.game}/`} class="hover:underline">
-                {gameMeta.title}
-              </a>
-            </p>
-          )}
-          <h2 class="mt-2 text-xl font-bold text-white">
-            <a href={getGuideUrl(guide)} class="hover:text-[var(--color-accent)]">
-              {guide.data.title}
-            </a>
-          </h2>
-          <p class="mt-3 text-sm text-[var(--color-text-muted)]">{guide.data.description}</p>
-          {
-            guide.data.tags.length > 0 && (
-              <ul class="mt-4 flex flex-wrap gap-2">
-                {guide.data.tags.slice(0, 4).map((tag) => (
-                  <li class="rounded-full bg-[var(--color-surface-muted)] px-2.5 py-0.5 text-xs text-[var(--color-text-muted)]">
-                    {tag}
-                  </li>
-                ))}
-              </ul>
-            )
-          }
-          <p class="mt-4 text-xs text-[var(--color-text-muted)]">
-            {formatDate(guide.data.publishedAt)}
-          </p>
+          <a href={getGuideUrl(guide)} class="flex flex-col sm:flex-row">
+            <div class="sm:w-44 md:w-52 shrink-0">
+              <GameImage slug={gameSlug} title={gameMeta.title} variant="thumb" class="h-full sm:min-h-full" />
+            </div>
+            <div class="flex min-w-0 flex-1 flex-col p-5">
+              {showGame && (
+                <p class="text-xs font-medium uppercase tracking-wide text-[var(--color-accent)]">
+                  {gameMeta.title}
+                </p>
+              )}
+              <h2 class:list={['text-lg font-bold text-white group-hover:text-[var(--color-accent)]', showGame && 'mt-1']}>
+                {guide.data.title}
+              </h2>
+              <p class="mt-2 line-clamp-2 text-sm text-[var(--color-text-muted)]">
+                {guide.data.description}
+              </p>
+              {
+                guide.data.tags.length > 0 && (
+                  <ul class="mt-3 flex flex-wrap gap-2">
+                    {guide.data.tags.slice(0, 3).map((tag) => (
+                      <li class="rounded-full bg-[var(--color-surface-muted)] px-2.5 py-0.5 text-xs text-[var(--color-text-muted)]">
+                        {tag}
+                      </li>
+                    ))}
+                  </ul>
+                )
+              }
+              <p class="mt-auto pt-4 text-xs text-[var(--color-text-muted)]">
+                {formatDate(guide.data.publishedAt)}
+              </p>
+            </div>
+          </a>
         </article>
       );
     })

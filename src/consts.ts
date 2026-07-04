@@ -17,6 +17,9 @@ export const GAMES = {
     trending: true,
     trendingOrder: 1,
     releaseDate: '2026-06-09',
+    coverUrl: '/images/games/meccha-chameleon.svg',
+    accentFrom: '#22c55e',
+    accentTo: '#a855f7',
   },
   'path-of-exile-2': {
     title: 'Path of Exile 2',
@@ -27,6 +30,9 @@ export const GAMES = {
     trending: true,
     trendingOrder: 2,
     releaseDate: '2024-12-06',
+    steamAppId: 2694490,
+    accentFrom: '#b45309',
+    accentTo: '#1c1917',
   },
   'cyberpunk-2077': {
     title: 'Cyberpunk 2077',
@@ -37,6 +43,9 @@ export const GAMES = {
     trending: true,
     trendingOrder: 3,
     releaseDate: '2020-12-10',
+    steamAppId: 1091500,
+    accentFrom: '#fcee0a',
+    accentTo: '#00f0ff',
   },
   'dead-by-daylight': {
     title: 'Dead by Daylight',
@@ -47,6 +56,9 @@ export const GAMES = {
     trending: true,
     trendingOrder: 4,
     releaseDate: '2016-06-14',
+    steamAppId: 381210,
+    accentFrom: '#dc2626',
+    accentTo: '#111827',
   },
   'marvel-rivals': {
     title: 'Marvel Rivals',
@@ -57,6 +69,9 @@ export const GAMES = {
     trending: true,
     trendingOrder: 5,
     releaseDate: '2024-12-06',
+    steamAppId: 2767030,
+    accentFrom: '#2563eb',
+    accentTo: '#dc2626',
   },
   'forza-horizon-6': {
     title: 'Forza Horizon 6',
@@ -67,6 +82,9 @@ export const GAMES = {
     trending: true,
     trendingOrder: 6,
     releaseDate: '2026-05-27',
+    coverUrl: '/images/games/forza-horizon-6.svg',
+    accentFrom: '#2563eb',
+    accentTo: '#f59e0b',
   },
 } as const;
 
