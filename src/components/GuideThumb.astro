@@ -14,13 +14,13 @@ const fallback = getGameThumbFallback(slug);
 ---
 
 <div
-  class="guide-thumb relative shrink-0 overflow-hidden rounded-lg"
+  class="guide-thumb relative h-16 w-28 shrink-0 self-start overflow-hidden rounded-lg sm:h-[4.5rem] sm:w-32"
   style={`box-shadow: 0 0 0 2px color-mix(in srgb, ${accent} 45%, transparent)`}
 >
   <img
     src={src}
     alt={`${title} artwork`}
-    class="h-16 w-28 object-cover sm:h-[4.5rem] sm:w-32"
+    class="absolute inset-0 h-full w-full object-cover object-center"
     loading="lazy"
     decoding="async"
     width={128}

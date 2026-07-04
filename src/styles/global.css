@@ -89,6 +89,16 @@ body {
     linear-gradient(180deg, var(--color-surface-elevated) 0%, var(--color-surface) 100%);
 }
 
+.guide-thumb {
+  background: var(--color-surface-muted);
+}
+
+.guide-thumb img {
+  display: block;
+  min-height: 100%;
+  min-width: 100%;
+}
+
 .prose-guide img {
   @apply my-6 w-full rounded-xl border border-[var(--color-border)] shadow-lg shadow-black/20;
 }

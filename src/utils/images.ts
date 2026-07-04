@@ -58,7 +58,7 @@ export function getGameThumbUrl(slug: GameSlug): string {
   const meta = GAMES[slug];
 
   if ('steamAppId' in meta && meta.steamAppId) {
-    return getSteamCapsuleUrl(meta.steamAppId);
+    return getSteamHeaderUrl(meta.steamAppId);
   }
 
   if ('coverUrl' in meta && meta.coverUrl) {
