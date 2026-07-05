@@ -7,12 +7,69 @@ import GameImage from './GameImage.astro';
 interface Props {
   guides: GuideEntry[];
   showGame?: boolean;
+  variant?: 'grid' | 'list';
 }
 
-const { guides, showGame = true } = Astro.props;
+const { guides, showGame = true, variant = 'grid' } = Astro.props;
 ---
 
-<div class="grid gap-6 sm:grid-cols-2 xl:grid-cols-3" data-guide-list>
+{
+  variant === 'list' ? (
+    <ol class="flex flex-col gap-3" data-guide-list>
+      {guides.map((guide) => {
+        const gameMeta = getGameMeta(guide.data.game);
+        const gameSlug = guide.data.game as GameSlug;
+        return (
+          <li>
+            <article
+              class="group rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-elevated)] transition hover:border-[var(--color-accent)]/50"
+              data-guide-card
+              data-game={guide.data.game}
+              data-tags={guide.data.tags.join(',')}
+              data-title={guide.data.title.toLowerCase()}
+            >
+              <a
+                href={getGuideUrl(guide)}
+                class="flex items-center gap-4 p-4 sm:gap-6 sm:p-5"
+              >
+                <time
+                  datetime={guide.data.publishedAt.toISOString()}
+                  class="w-24 shrink-0 text-xs leading-snug text-[var(--color-text-muted)] sm:w-28 sm:text-sm"
+                >
+                  {formatDate(guide.data.publishedAt)}
+                </time>
+                <div class="min-w-0 flex-1">
+                  {showGame && (
+                    <p class="text-xs font-medium uppercase tracking-wide text-[var(--color-accent)]">
+                      {gameMeta.title}
+                    </p>
+                  )}
+                  <h2
+                    class:list={[
+                      'break-words text-base font-bold leading-snug text-white group-hover:text-[var(--color-accent)] sm:text-lg',
+                      showGame && 'mt-0.5',
+                    ]}
+                  >
+                    {guide.data.title}
+                  </h2>
+                  <p class="mt-1 line-clamp-1 text-sm text-[var(--color-text-muted)]">
+                    {guide.data.description}
+                  </p>
+                </div>
+                <GameImage
+                  slug={gameSlug}
+                  title={gameMeta.title}
+                  variant="thumb"
+                  class="hidden h-16 w-24 shrink-0 overflow-hidden rounded-lg sm:block"
+                />
+              </a>
+            </article>
+          </li>
+        );
+      })}
+    </ol>
+  ) : (
+    <div class="grid gap-6 sm:grid-cols-2 xl:grid-cols-3" data-guide-list>
   {
     guides.map((guide) => {
       const gameMeta = getGameMeta(guide.data.game);
@@ -65,3 +122,5 @@ const { guides, showGame = true } = Astro.props;
     })
   }
 </div>
+  )
+}

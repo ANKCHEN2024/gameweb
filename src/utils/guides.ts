@@ -4,11 +4,26 @@ import { GAMES, type GameSlug } from '../consts';
 
 export type GuideEntry = CollectionEntry<'guides'>;
 
+function compareGuidesNewestFirst(a: GuideEntry, b: GuideEntry): number {
+  const dateDiff = b.data.publishedAt.getTime() - a.data.publishedAt.getTime();
+  if (dateDiff !== 0) return dateDiff;
+  const updatedDiff =
+    (b.data.updatedAt?.getTime() ?? 0) - (a.data.updatedAt?.getTime() ?? 0);
+  if (updatedDiff !== 0) return updatedDiff;
+  const trendingDiff =
+    GAMES[a.data.game].trendingOrder - GAMES[b.data.game].trendingOrder;
+  if (trendingDiff !== 0) return trendingDiff;
+  return getGuideSlug(b).localeCompare(getGuideSlug(a));
+}
+
 export async function getPublishedGuides(): Promise<GuideEntry[]> {
   const guides = await getCollection('guides', ({ data }) => !data.draft);
-  return guides.sort(
-    (a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime(),
-  );
+  return guides.sort(compareGuidesNewestFirst);
+}
+
+export async function getLatestGuides(limit = 12): Promise<GuideEntry[]> {
+  const guides = await getPublishedGuides();
+  return guides.slice(0, limit);
 }
 
 export function getGuideSlug(entry: GuideEntry): string {
@@ -25,7 +40,9 @@ export function getGameUrl(game: GameSlug): string {
 
 export async function getGuidesByGame(game: GameSlug): Promise<GuideEntry[]> {
   const guides = await getPublishedGuides();
-  return guides.filter((guide) => guide.data.game === game);
+  return guides
+    .filter((guide) => guide.data.game === game)
+    .sort(compareGuidesNewestFirst);
 }
 
 export function getRelatedGuides(
@@ -53,6 +70,7 @@ export function formatDate(date: Date): string {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
+    timeZone: 'UTC',
   }).format(date);
 }
 
@@ -61,6 +79,11 @@ export function getTrendingGames(): { slug: GameSlug; meta: (typeof GAMES)[GameS
     .filter(([, meta]) => meta.trending)
     .sort((a, b) => a[1].trendingOrder - b[1].trendingOrder)
     .map(([slug, meta]) => ({ slug, meta }));
+}
+
+/** Top N games by trendingOrder (heat rank), not publish date */
+export function getHotGames(limit = 6): { slug: GameSlug; meta: (typeof GAMES)[GameSlug] }[] {
+  return getTrendingGames().slice(0, limit);
 }
 
 export function getAllGames(): { slug: GameSlug; meta: (typeof GAMES)[GameSlug] }[] {

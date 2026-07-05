@@ -1,0 +1,60 @@
+---
+import type { GameSlug } from '../consts';
+import type { GameMeta } from '../consts';
+import GameImage from './GameImage.astro';
+
+interface Props {
+  games: { slug: GameSlug; meta: GameMeta; guideCount: number }[];
+}
+
+const { games } = Astro.props;
+---
+
+<div class="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
+  {
+    games.map(({ slug, meta, guideCount }, index) => {
+      const rank = index + 1;
+      const isTop = rank === 1;
+      return (
+        <a
+          href={`/games/${slug}/`}
+          class:list={[
+            'group relative overflow-hidden rounded-2xl border bg-[var(--color-surface-elevated)] shadow-lg shadow-black/25 transition duration-300',
+            isTop
+              ? 'border-[var(--color-accent)]/40 ring-1 ring-[var(--color-accent)]/20 sm:col-span-1'
+              : 'border-[var(--color-border)] hover:border-[var(--color-accent)]/40',
+          ]}
+        >
+          <GameImage
+            slug={slug}
+            title={meta.title}
+            variant="card"
+            class="aspect-[5/3] sm:aspect-[16/10]"
+          />
+          <div
+            class="pointer-events-none absolute inset-0 bg-gradient-to-t from-[var(--color-surface)] via-[var(--color-surface)]/50 to-transparent"
+            aria-hidden="true"
+          />
+          <span
+            class:list={[
+              'absolute left-3 top-3 flex h-7 w-7 items-center justify-center rounded-lg text-xs font-bold tabular-nums',
+              isTop
+                ? 'bg-[var(--color-accent)] text-[var(--color-surface)]'
+                : 'border border-white/10 bg-black/50 text-white backdrop-blur-sm',
+            ]}
+          >
+            {rank}
+          </span>
+          <div class="absolute inset-x-0 bottom-0 p-3 sm:p-4">
+            <p class="line-clamp-2 text-sm font-bold leading-snug text-white group-hover:text-[var(--color-accent)] sm:text-base">
+              {meta.title}
+            </p>
+            <p class="mt-1 text-xs text-[var(--color-text-muted)]">
+              {guideCount} guides
+            </p>
+          </div>
+        </a>
+      );
+    })
+  }
+</div>

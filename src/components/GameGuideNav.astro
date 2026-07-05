@@ -1,6 +1,6 @@
 ---
 interface Props {
-  guides: { title: string; href: string }[];
+  guides: { title: string; href: string; date?: string }[];
   gameTitle: string;
 }
 
@@ -14,6 +14,7 @@ const { guides, gameTitle } = Astro.props;
       class="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-elevated)] p-5"
     >
       <p class="text-sm font-semibold text-white">All {gameTitle} guides</p>
+      <p class="mt-1 text-xs text-[var(--color-text-muted)]">Newest first</p>
       <ul class="mt-4 max-h-80 space-y-2 overflow-y-auto text-sm">
         {guides.map((guide) => (
           <li>
@@ -21,7 +22,12 @@ const { guides, gameTitle } = Astro.props;
               href={guide.href}
               class="block text-[var(--color-text-muted)] transition hover:text-[var(--color-accent)]"
             >
-              {guide.title}
+              <span class="line-clamp-2">{guide.title}</span>
+              {guide.date && (
+                <span class="mt-0.5 block text-xs text-[var(--color-text-muted)]/70">
+                  {guide.date}
+                </span>
+              )}
             </a>
           </li>
         ))}

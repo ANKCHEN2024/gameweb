@@ -6,7 +6,7 @@ import AffiliateCTA from '../../components/AffiliateCTA.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import HeroBanner from '../../components/HeroBanner.astro';
 import { GAMES, type GameSlug } from '../../consts';
-import { getGuidesByGame, getGuideUrl } from '../../utils/guides';
+import { getGuidesByGame, getGuideUrl, formatDate } from '../../utils/guides';
 
 export function getStaticPaths() {
   const gameSlugs = Object.keys(GAMES) as GameSlug[];
@@ -22,6 +22,7 @@ const guides = await getGuidesByGame(game);
 const guideNav = guides.map((g) => ({
   title: g.data.title,
   href: getGuideUrl(g),
+  date: formatDate(g.data.publishedAt),
 }));
 ---
 

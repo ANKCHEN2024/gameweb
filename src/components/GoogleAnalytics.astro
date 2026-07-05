@@ -1,0 +1,24 @@
+---
+/** GA4 — only loads when PUBLIC_GA_MEASUREMENT_ID is set at build time */
+const gaId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID?.trim();
+const enabled = Boolean(gaId?.startsWith('G-'));
+---
+
+{
+  enabled && (
+    <>
+      <script
+        async
+        src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
+      />
+      <script is:inline define:vars={{ gaId }}>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() {
+          dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+        gtag('config', gaId, { anonymize_ip: true });
+      </script>
+    </>
+  )
+}
